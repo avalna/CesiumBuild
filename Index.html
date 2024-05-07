@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" >
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/measure-tool.css">
+<link rel="stylesheet" href="css/pedestian-mode.css">
+<link rel="stylesheet" href="css/adress-search.css">
+<link rel="stylesheet" href="css/terrain-profile-tool.css">
+<link rel="stylesheet" href="css/layer-menu.css">
+<link rel="stylesheet" href="css/info-menu.css">
+<link rel="stylesheet" href="css/cesium-overwrite.css">
+<link rel="stylesheet" href="css/toolbar-div.css">
+<!-- Include the CesiumJS JavaScript and CSS files -->
+<script src="https://cesium.com/downloads/cesiumjs/releases/1.112/Build/Cesium/Cesium.js"></script>
+<link href="https://cesium.com/downloads/cesiumjs/releases/1.112/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+  
+<!-- Colorpicker -->
+<script type="module" src="https://unpkg.com/vanilla-colorful?module"></script>
+
+<!-- For terrainprofile  -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
+
+<!-- JQuery  -->
+<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+
+<!-- Google Materials Symbols and Icons and font awsome -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- Proj4js för koordinattransformation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.8.1/proj4.js" integrity="sha512-aIqYhZWmKBmfxEcdqUuqln8wMYFvGUKw4sqfjNcCoEQgx2iZF26+ikx0kz35uHjwpejMeHCcfHUpCtkohi2raw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.8.1/proj4-src.js" integrity="sha512-gtgo84Stfn1In8lEKw5y0UGGoyEQ598jjMHLrLJJ6p7WvBKQixg1NuoaXR7DFjzmwYlJFcxjtjqCMHCjYM9iLg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.8.1/proj4-src.min.js" integrity="sha512-r4rHKWQn8K1qufdhQRbpocbwlhtRKRd5jYVLL5+Vu3/xV2NBfASBeogPCBDRyvxMntqIxxI8UQODwGvDllnsHQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.8.1/proj4.min.js" integrity="sha512-JToqu2hzfiepDTg9LjkVzYhUhTcYGJIj2aGOn3Q+7sPVSi2n+vmpxISCbOJ2b3I4OQmqG0KQYovX6f3Rx+etAQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<!-- Sandcastle -->
+<script src = "https://sandcastle.cesium.com/Sandcastle-header.js"></script>
+
+<!-- Tippy -->
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+
+<title>VDMB Intern Digital Tvilling</title>
+<link rel="icon" type="image/x-icon" href="/images/Cesium.png">
+</head>
+<body>
+    <script> 
+        // This is for the viewerCesiumNavigationMixin
+        Cesium.defineProperties = Object.defineProperties;
+
+        // Adds a class to the modified Cesium toolbar
+        document.addEventListener('DOMContentLoaded', function() {
+        var toolbar = document.querySelector(".cesium-viewer-toolbar");
+          if (toolbar) {
+            toolbar.classList.add('loaded');
+          }
+        });
+
+    </script>
+
+    <!-- Copied code from https://github.com/3DGISKing/CesiumJsSamples/tree/master/Mixins/NavigationMixin only change the tooltip language to Swedish  -->
+    <script src="js/viewerCesiumNavigationMixin.min.js"></script>
+    <!-- This file is the "main" js file where the viewer inits -->
+    <script src="js/viewer.js" type="module"></script>
+    <!-- This file creates buttons for the cesium toolbar and appends it to its class -->
+    <!-- It also has some functionallity for some of the functions that i didnt manage to break out in its own module  -->
+    <script src="js/toolbar.js" type="module"></script>
+    <!-- In this file all the additional wms layers are added --> 
+    <script src="js/layers.js" type="module"></script>
+    <!-- This file creates the layer menu in the bottom left -->
+    <script src="js/layer-menu.js" type="module"></script>
+    <!-- This file creates the handles the coordinate lookup functionallity -->
+    <script src="js/coordLookup.js" type="module"></script>
+    <!-- This file handles the terrain profile tool -->
+    <script src="js/terrainProfile.js" type="module" ></script>
+    <!-- Turf js, used for the measure tool -->
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@latest/turf.min.js"></script>
+    <script src="/js/measureOwn.js" type="module"></script>
+<script>
+  /* The layer menu in the bottom left */
+  function toggleLayerMenu() {
+  const layerMenu = document.getElementById("layerMenu");
+  if (layerMenu.style.display === "block") {
+    layerMenu.style.display = "none";
+  } else {
+    layerMenu.style.display = "block";
+  }
+}
+</script>
+<script>
+  // Define the version number variable
+  var appVersion = " 1.0.15"; // Change this to your desired version number
+</script>
+</div>
+<!-- Top left -->  
+<div id="toolbar-div">
+  <button id="navigationInfoBtn1">
+    <span class="material-symbols-outlined">question_mark</span>
+  </button>
+  <button id="hideToolbarBtn">
+    <span class="material-symbols-outlined">
+    settings
+    </span>
+  </button>  
+</div>
+
+<!-- Tooltips for the measuring tool -->  
+<div id="line-measure-tooltip" class="measure-tooltip">Klicka på terrängen 2ggr för att börja mäta</div>
+<div id="measure-tooltip" class="measure-tooltip">Klicka på terrängen för att börja mäta</div>
+<div id="measure-container">
+  <h4>Mätverktyg</h4>
+  Linjemått är spatialt och arean är i 2D. <br>
+  Linjelängd: 
+  <span id="lineLength"></span>
+  <br>
+  Area:
+  <span id="areaValue"></span>
+  <br>
+  <img src="/images/Pythagorean_triangle_with_sides_a_b_and_c.svg" alt="mätningstriangel" style="width: 80%;" >
+  <br>
+  <span id="heightDifference"></span>
+  <span id="baseLength"></span>
+  <span id="diagonalLength"></span>
+</div>
+
+<!-- Adress search -->  
+<div id="location-search-container">
+  <input id="adress-search" type="search" placeholder="Sök Adresser" class="hide-clear">
+  <span id="search-clear-icon" class="material-symbols-outlined">
+    search
+  </span>
+</div>
+<div id="addressDropdown"></div>
+
+<!-- Bottom left -->  
+<button id="layerIcon" onclick="toggleLayerMenu()">
+  <span class="material-symbols-outlined">
+  layers
+  </span>
+</button>
+<div id="layerMenu">
+  <div id="title2">
+    <button id="closeLayers" onclick="toggleLayerMenu()" >
+      <span class="material-symbols-outlined">
+      close
+      </span>
+    </button> 
+    <button id="clearAllLayers" >
+      <span class="material-symbols-outlined">
+      layers_clear
+      </span>
+    </button> 
+    <button id="collapseAllLayers" >
+      <span class="material-symbols-outlined">
+      collapse_all
+      </span>
+    </button>     
+    <input type="text" id="layerSearch" placeholder="Sök efter lager" />
+    <div id="tilesLayerInfo"> Klicka på lager för att expandera</div>
+  </div>
+  <!-- Populates from layer-menu.js -->
+  <ul id="layerList"></ul>
+  <!-- Populates from viewer.js -->
+  <ul id="tilesetsList"></ul>
+  <!-- Populates from viewer.js -->
+  <div id="layermenuFooter"></div>
+</div>
+
+<!-- For coordiate lookup function -->  
+<div id="coordlabelsInfo">Klicka på marken för att få koordinater för vald position
+  <div id="coordlabels">
+    <!-- Content will be dynamically updated by JavaScript -->
+  </div>
+</div>
+
+<!-- Terrain profile -->  
+<div id="terrainProfileDiv">
+  <h2>Generera terrängprofil</h2>
+  <p>För att öka säkerheten på samplad data, zooma in bra och låt terrängen rendera färdigt.</p>
+   <!-- Add the following input element for specifying the number of samples -->
+   <label for="numberOfSamples">Antal brytpunkter från start till slut, ekvidistanta punkter :</label>
+   <input type="number" id="numberOfSamples" value="10" min="2" max="100">
+   <br>
+  <button id="drawLineButton">Rita linje</button>
+</div>
+<!-- Holds the result from the terrainprofile measurement -->  
+<div id="resizableChartContainer" style="display: none;">
+  <div id="resizableChartContainerHeader"> 
+    <h2>Terrängprofil</h2>
+  </div>
+  <button id="closeChartButton">
+    <span class="material-symbols-outlined">
+    close
+    </span>
+  </button>
+  <canvas id="terrainProfileChart"></canvas>
+  <!-- Add this table to your HTML -->
+  <button id="exportToExcelButton" >
+    <span class="material-symbols-outlined">
+    file_save
+    </span>
+  </button>
+  <div style="text-align: center;">
+  <button id="toggleCoordinatesButton">Byt koordinatsystem (SWEREF99TM)</button>
+  </div>
+  <table id="punktlistaTable">
+    <thead>
+      <tr>
+      <th>Punktlista</th>
+      <th id="headerLonLat1">E</th>
+      <th id="headerLonLat2">N</th>
+      <th>Z</th>
+      </tr>
+    </thead>
+    <tbody id="punktlistaTableBody">
+    <!-- Table rows will be added here dynamically -->
+    </tbody>
+  </table>
+</div>
+
+<div class="container">
+  <div class="content" id="mainContent">
+    <button id="showMenu">
+      <span class="material-symbols-outlined">
+      menu
+      </span>
+    </button>
+      <div class="VDMB_bottom">VDMB  <a href="mailto:kartomat@avesta.se?subject=Från Digital Tvilling -'Din rubrik'" style="color: #fff;">kartomat@avesta.se
+            </a>
+      </div>
+      <!-- Shows the coordinates on mouse position, content from coordTrans.js -->
+      <div id="coordinates" >Koordinater laddar...
+      </div>
+      <div id="cesiumContainer">
+        <div class="sidebarContainer" id="sidebarContainer">
+          <div class="sidenav">
+            <div id="scroll">
+              <div id="title">
+                <button id="closeMenu">
+                  <span class="material-symbols-outlined">
+                  close
+                  </span>      
+                  <button id="screenshotBtn" >
+                    <span class="material-symbols-outlined">
+                    print
+                    </span>
+                  </button> 
+                  <button id="shareBtn">
+                    <span class="material-symbols-outlined">
+                    share_location
+                    </span>
+                  </button>
+                  <button id="openOrigo">
+                  </button>
+                </div>
+                <button class="dropdown-btn">
+                  <span class="material-symbols-outlined">
+                  info
+                  </span> Versioninformation
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-container">
+                  <div id="mobile-attribution">
+                    <a href="https://cesium.com/" target="_blank"><img src="/images/Cesium_ion_black.png" alt="" style="width: 50%;"></a>
+                  </div>
+                  <div id="dropdown-container-text">
+                    Modellversion
+                    <span id="versionDisplay">
+                    </span>   
+                  </div>
+                <a href="../changelog/changelog.html" target="_blank"> Changelog </a>
+                </div>
+                  <button class="dropdown-btn">
+                    <span class="material-symbols-outlined">
+                    zoom_in_map
+                    </span> Zooma till kommun 
+                      <i class="fa fa-caret-down"></i>
+                  </button>
+                  <div class="dropdown-container">
+                    <a href="#" id="avesta">Avesta</a>
+                    <a href="#" id="fagersta">Fagersta</a>
+                    <a href="#" id="norberg">Norberg</a>
+                    <a href="#" id="overview">Översiktligt</a> 
+                  </div>
+                  <button class="dropdown-btn"><i class="material-symbols-outlined">edit_location</i> Planer & Projekt Avesta 
+                    <i class="fa fa-caret-down"></i>
+                  </button>
+                    <div class="dropdown-container">
+                      <button class="dropdown-btn">Stadsplan etapp 1 
+                            <i class="fa fa-caret-down"></i>
+                          </button>
+                          <div class="dropdown-container">
+                            <a id="AvestaStadsplan">Information</a>
+                            <a href="#" id="avestaStandplanFly">Zooma till område</a>
+                            <a href="#" id="solen19grans">Tänd område</a>                        
+                          </div>
+                    </div>
+                    <button class="dropdown-btn"><i class="material-symbols-outlined">edit_location</i> Planer & Projekt   Fagersta 
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-container">
+                      <button class="dropdown-btn">DPL Delar av Fårboområdet 
+                        <i class="fa fa-caret-down"></i>
+                      </button>
+                    <div class="dropdown-container">
+                      <a href="#"  id="DPFarbo">Information</a>
+                      <a href="#" id="DPFarboFly">Zooma till område</a>
+                      <a href="#" id="dpDelAvFarbo">Plankarta</a>
+                    </div>
+                    <button class="dropdown-btn">Projekt Floravägen
+                      <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-container">
+                      <a href="https://www.winrotharkitekter.se/foravgen-ldreboende" target="_blank"  id="">Information</a>
+                      <a href="#" id="floravagen">Zooma till område</a>
+                    </div>
+                    </div>
+                      <button class="dropdown-btn"><i class="material-symbols-outlined">edit_location</i> Planer & Projekt Norberg 
+                        <i class="fa fa-caret-down"></i>
+                      </button>
+                      <div class="dropdown-container">
+                          <button class="dropdown-btn">Västra Centrum 
+                              <i class="fa fa-caret-down"></i>
+                            </button>
+                            <div class="dropdown-container">
+                              <a href="#"  id="DPVastraCentrum" >Information</a>
+                              <a href="#" id="dpVCFly">Zooma till område</a>
+                              <a href="#" id="dpVC">Plankarta</a>
+                              <a href="#" id="vcByggnader">Tänd illustrationsbyggnader</a>
+                              <a href="#" id="illVC">Illustrationsplan</a>
+                            </div>
+                      </div>
+                  </div>
+                </div>
+                </div>
+            </div>
+            <!-- Cesium toolbar -->
+            <div class="cesium-viewer-toolbar">
+              <!-- Main button -->
+            </div>
+
+            <!-- Content of your web page goes here -->
+            <button id="closeIframeInMainContent"><span class="material-symbols-outlined">
+                close
+                </span>      
+            </button>
+
+            <div id="drawingToolbox" class="toolbox">
+              <div id="drawingOptions">
+                <p style='margin: auto; text-align: center; font-size: 16px;'> Vänsterklick för att sätta ut en punkt, <br>
+                   högerklicka för att färdigställa objekt.</p>
+                  <label for="drawingMode">Ritläge:</label>
+                  <select id="drawingMode">
+                      <option value="line">Linje</option>
+                      <option value="polygon">Polygon</option>
+                      <option value="point">Punkt</option>
+                      <option value="pin">Pin</option>
+                      <option value="label">Etikett</option> <!-- New option for "Label" -->
+            
+                  </select>
+                  <div>
+                      <label for="pointColor">Punktfärg:</label>
+                      <input type="color" id="pointColor" value="#ffffff">
+                  </div>
+                  <div>
+                      <label for="lineColor">Linjefärg:</label>
+                      <input type="color" id="lineColor" value="#ff0000">
+                  </div>
+                  <div>
+                      <label for="polygonColor">Polygonfärg:</label>
+                      <input type="color" id="polygonColor" value="#00ff00">
+                      <br><label for="polygonAlpha">Polygonopacitet:</label>
+                      <input type="range" id="polygonAlpha" min="0" max="1" step="0.1" value="0.5">
+                  </div>
+                  <div>
+                      <label for="pointIconSelect">Pin färg:</label>
+                  <select id="pointIconSelect">
+                      <option value="/images/BlaPin.png">Blå Pin</option>
+                      <option value="/images/GronPin.png">Grön Pin</option>
+                      <option value="/images/GulPin.png">Gul Pin</option>
+                      <option value="/images/OrangePin.png">Orange Pin</option>
+                      <option value="/images/MorkBlaPin.png">Mörkblå Pin</option>
+                      <option value="/images/LilaPin.png">Lila Pin</option>
+                      <option value="/images/RosaPin.png">Rosa Pin</option>
+                      <!-- Add more options as needed -->
+                  </select>
+                  </div>
+                  <div>
+                      <label for="labelText">Etikett text:</label>
+                      <input type="text" id="labelText" value="Exempel text">
+                  </div>
+                  <div>
+                      <label for="labelColor">Etikettfärg:</label>
+                      <input type="color" id="labelColor" value="#FFFFFF">
+                  </div>
+                  <div>
+                      <label for="labelSize">Etikettstorlek:</label>
+                      <input type="number" id="labelSize" min="10" max="30" value="20">
+                  </div>
+                  <button class="toolbox-button" id="clearDrawingsButton">Rensa allt ritat</button>
+                  <button id="clearLastDrawnButton">Rensa senast objekt</button>
+              </div>
+            </div>    
+            </div>
+            </button> 
+            
+            
+            <div id="pedestrianModeInfo" style="display: none;">
+              <h4 style='margin: auto; text-align: center;'>Experimentell funktion - fotgängarläge</h4> 
+              <h5 style='margin: auto; text-align: center;'>Buggar kan förekomma</h5><br>
+              <h5 style='margin: auto; text-align: center;'>Zooma in och klicka på marken där du vill placera kameran. <br>
+                Du kan välja en ny position genom att klicka igen på marken. <br>
+                 Genom att hålla in Shift och dra med vänster musklick kan du vrida huvudet. 
+            </h5>
+            <button class="toggle-button hidden" id="exitPedestrianModeBtn" style="display: none;">Stäng fotgängarläge</button>
+            </div>
+
+
+
+        </div>
+        <!-- WMS legends -->
+        <div id="legendContainer">
+          <div id="legendAjourImg">
+        3D <br>
+        <img src="https://digitaltvilling-test.adm.avesta.se/geoserver/wms/?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=Ajouromraden3DNew" alt=""> 
+          </div>
+         <div id="legendAjour2DImg">
+        Mätning <br>
+        <img src="https://digitaltvilling-test.adm.avesta.se/geoserver/wms/?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=Ajouromraden2DNew" alt="">
+        </div>  
+        </div>
+        <div class="cesium-custom-container">
+              
+          <!-- You can add your custom content here to replace the geocoder -->
+      </div>
+        <div id="iframeContainer" class="iframe-container">
+            <iframe id="iframe" src="" frameborder="0"></iframe>
+           <button id="closeIframe"><span class="material-symbols-outlined">
+                close
+                </span>      
+        </div>
+    </div>
+    <script>
+        // Use the appVersion variable wherever you need to display or reference the version number
+  document.getElementById('versionDisplay').innerText = appVersion;
+ 
+  
+    </script>
+    <script src="iframe.js"></script>
+    <!--Load in after HTML since its eventlistners -->
+    <script src="js/navigation-info.js"></script>
+    <script src="js/tippy-global.js"></script>
+    <script src="/js/coordTrans.js" type="module"></script>
+    <script src="/js/drawingToolbox.js" type="module"></script>
+    <script src="/js/featureHiding.js" type="module"></script>
+    <script src="/js/screenshot.js" type="module"></script>
+    <script src="/js/sharing.js" type="module"></script>
+    <script src="/js/searchbar.js" type="module"></script>
+    <script src="js/menu.js" type="module"></script>
+    <script src="js/pedestrian.js" type="module"></script>
+</body>
+</html>
