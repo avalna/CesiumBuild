@@ -1,0 +1,41 @@
+#toolbar-div{
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 1;
+  }
+  #navigationInfoBtn1 {
+    display: flex;
+    z-index: 1;
+    top: 10px;
+    justify-content: center;
+    align-items: center;
+    background-color: #FFF;
+    color: #000;
+    border-radius: 50%;
+    height: 32px;
+    width: 32px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);  
+    margin-bottom: 4px;
+
+  }
+  #hideToolbarBtn {
+    display: flex;
+    z-index: 1;
+    top: 10px;
+    justify-content: center;
+    align-items: center;
+    background-color: #FFF;
+    color: #000;
+    border-radius: 50%;
+    height: 32px;
+    width: 32px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+   
