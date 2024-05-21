@@ -1,0 +1,28 @@
+#coordlabels {
+    position: relative;
+    top: 10px; /* Adjust the top position as needed */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff;
+    padding: 10px;
+    z-index: 999;
+    border-radius: 15px;
+    display: none;
+    font-weight: normal;
+  }
+  #coordlabelsInfo {
+    position: absolute;
+    font-weight: bold;
+    max-width: 400px;
+    top: 10px; /* Adjust the top position as needed */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff;
+    padding: 10px;
+    border: 1px solid #ccc;
+    box-shadow:  2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    border-radius: 15px;
+    display: none;
+    padding-bottom:20px ;
+  }
