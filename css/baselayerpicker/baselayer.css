@@ -1,0 +1,264 @@
+    /* Scrollbar-effect------- */
+    #layerMenu::-webkit-scrollbar {
+        width: 5px;
+        height: 8px;
+        }
+        #layerMenu::-webkit-scrollbar-track {
+        border-radius: 10px;
+        background-color: #e4e4e4;
+        margin-top: 20px;
+        margin-bottom: 20px; 
+        }
+        #layerMenu::-webkit-scrollbar-thumb {
+        background: #0089ff;
+        border-radius: 10px;
+        transition: 0.5s;
+        }
+        #layerMenu::-webkit-scrollbar-thumb:hover {
+        background: #d5b14c;
+        transition: 0.5s;
+        }
+      
+      
+          #clearAllLayers {
+            position:absolute;
+            top: 10px;
+            right: 40px;
+            padding: 4px;
+            border-radius: 50%;
+            border: none;
+            background-color: #dbdbdb;
+            cursor: pointer;
+             
+          }
+          #collapseAllLayers {
+            position:absolute;
+            top: 10px;
+            right: 80px;
+            padding: 4px;
+            border-radius: 50%;
+            border: none;
+            background-color: #dbdbdb;
+            cursor: pointer;
+             
+          }
+          #closeLayers{
+            position:absolute;
+            top: 10px;
+            right: 0px;
+            padding: 4px;
+            border-radius: 50%;
+            border: none;
+            background-color: #dbdbdb;
+            cursor: pointer;
+          
+              
+          }
+      
+      #layerIcon {
+        position: absolute;
+        bottom: 40px;
+        left: 12px;
+        background: #fff;
+        color: #000;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        text-align: center;
+        z-index: 999;
+        cursor: pointer;
+        user-select: none;
+        border: none;
+        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      /* Style for the layer menu */
+      #layerMenu {
+        z-index: 999;
+        display: none;
+        position: absolute;
+        bottom: 40px;
+        left: 12px;
+        background: #f2f2f2;
+        border: 1px solid #ccc;
+        border-radius: 20px;
+        padding-left: 10px;
+        padding-right: 10px;
+        min-width: 400px;
+        max-width: 500px;
+        max-height: 50%;
+        overflow: auto;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        user-select: none;
+      }
+
+      
+/* Style the layer list */
+#layerList {
+    list-style: none;
+    padding: 0;
+  }
+  /* Style the tag headers */
+  #layerList .tag-header {
+    font-weight: bold;
+  }
+  
+  /* Style each list item (tag) */
+  #layerList li {
+    margin: 5px 0;
+    
+  }
+  #layerList input[type="range"]{
+    position: relative;
+    float: right;
+  }
+  
+  /* Style the label inside the list item */
+  #layerList label {
+    display: block;
+    position: relative;
+    padding-left: 24px; /* Adjust the left padding as needed */
+    font-size: 16px; /* Adjust the font size as needed */
+    color: #333; /* Text color */
+    cursor: pointer;
+  }
+  
+  /* Style the checkbox */
+  #layerList input[type="checkbox"] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 1;
+    cursor: pointer;
+  }
+  
+  /* Style the checkbox when checked */
+  #layerList input[type="checkbox"]:checked + label {
+    font-weight: bold; /* Change font-weight for checked items */
+    color: #007bff; /* Change text color for checked items */
+  }
+  
+  
+  /* Style for the layer search input */
+  #layerSearch {
+    width: 230px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    text-align: left;
+    float: left;
+    position: absolute;
+    top: 10px;
+    left: 0px; 
+  }
+  /* Style for the layer search input */
+  #tilesLayerInfo{
+    width: 230px;
+    padding: 5px;
+    margin-bottom: 10px;
+    text-align: left;
+    float: left;
+    position: absolute;
+    top: 10px;
+    left: 0px; 
+    display: none;
+    font-size:medium;
+  }
+  
+  /* Style for the checkboxes */
+  input[type="checkbox"] {
+    margin-right: 5px;
+    vertical-align: middle;
+  }
+  
+  /* Style for the label text */
+  label {
+    font-size: 16px;
+    color: #333;
+    cursor: pointer;
+  }
+  
+  #title2{
+    color:#000000;
+    padding-left: 60px;
+    font-size: x-large;
+    padding-bottom: 50px;
+    border-top: #00000000;
+    border-left: #00000000;
+    border-right:#00000000 ;
+    border-bottom:#949494;
+    border-width: 1px;
+    border-style: solid;
+    font-weight: 600;
+    position: sticky;
+   /*  display: block; */
+    z-index: 2;
+    top: 0;
+    background-color: #f2f2f2;
+  }
+  
+  #layermenuFooter{
+    position: sticky;
+    bottom: 0;
+    background-color: #f2f2f2;
+    height:50px;
+    border-top: #949494;
+    border-style: solid;
+    border-left: #00000000;
+    border-right:#00000000;
+    border-bottom: #00000000;
+    border-width: 1px;
+    display: flex;
+    /* justify-content: space-between; */
+    align-items: center; /* Vertically center the buttons */
+    width: 100%; /* Ensure the container spans the whole width */
+  }
+  .default-map {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 6px;
+    border: none;
+  }
+  .default-map.active {
+    border: 2px solid red; /* Set the active ring color and thickness */
+    border-radius: 50%; /* Make the border circular */
+  }
+  
+  #Baselayer-button1{
+    background-image: url(../../images/baselayers/orto.png);
+    background-size: contain;
+    cursor: pointer;
+  }
+  #Baselayer-button2{
+    background-image: url(../../images/baselayers/farg.png);
+    background-size: contain;
+    cursor: pointer;
+  }
+  #Baselayer-button3{
+    background-image: url(../../images/baselayers/gra.png);
+    background-size: contain;
+    cursor: pointer;
+  }
+  #Baselayer-button4{
+    background-image: url(../../images/baselayers/farg.png);
+    background-size: contain;
+    cursor: pointer;
+  }
+  #Baselayer-button5{
+    background-image: url(../../images/baselayers/orto_history.png);
+    background-size: contain;
+    cursor: pointer;
+  }
+  #Baselayer-button6{
+    background-image: url(../../images/baselayers/orto_history.png);
+    background-size: contain;
+    cursor: pointer;
+  }
+  #Baselayer-button7{
+    background-image: url(../../images/baselayers/irOrto.png);
+    background-size: contain;
+    cursor: pointer;
+  }
+  
+  
