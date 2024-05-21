@@ -1,0 +1,101 @@
+#tilesetMenu{
+    position: fixed;
+    top: 50px;
+    left: 50px;
+    z-index: 100;
+    }
+          /* Styling for the tree view */
+          .treeview {
+            list-style: none;
+            padding-left: 1em;
+        }
+        .treeview li {
+            margin: 0;
+            padding: 0;
+        }
+        .treeview label {
+            cursor: pointer;
+            display: block;
+        }
+        .treeview label:hover {
+            background-color: #f0f0f0;
+        }
+        .treeview input[type="checkbox"] {
+            display: none;
+        }
+        .treeview input[type="checkbox"] + label::before {
+            content: "▶";
+            margin-right: 0.3em;
+        }
+        .treeview input[type="checkbox"]:checked + label::before {
+            content: "▼";
+        }
+        .nested {
+            display: none;
+            padding-left: 1em;
+        }
+        .treeview input[type="checkbox"]:checked ~ .nested {
+            display: block;
+        }
+    
+    .collapsed {
+          display: none;
+        }
+    
+    
+      .container {
+        display: flex;
+        height: 100%;
+    }
+    /* CSS for the arrow */
+    .arrow {
+      display: inline-block;
+      width: 0;
+      height: 0;
+      border: solid 5px transparent;
+      border-top-color: #000;
+      border-bottom: none;
+      transition: transform 0.3s; /* Add transition for smooth animation */
+      margin-left: 3px;
+      vertical-align: middle;
+    }
+    
+    /* CSS to rotate the arrow when the group is expanded */
+    .collapsed .arrow {
+      transform: rotate(-90deg);
+    }
+    /* CSS for the arrow */
+    .arrowGroupName {
+      display: inline-block;
+      width: 0;
+      height: 0;
+      border: solid 5px transparent;
+      border-top-color: #000;
+      border-bottom: none;
+      transition: transform 0.3s; /* Add transition for smooth animation */
+      margin-left: 3px;
+      vertical-align: middle;
+      transform: rotate(-90deg);
+    }
+    #tilesetsList{
+     
+      margin: 0;
+      padding-left: 0;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+    
+    ul {
+    list-style-type: none;
+    cursor: pointer;}
+    #zoomTilesBtn {
+      background-color: #dbdbdb;
+      color: #000;
+      border: none;
+      border-radius: 50%;
+      width: 24px; /* Adjust width and height to desired size */
+      height: 24px;
+      padding: 0; /* Remove padding */
+      margin-left: 10px; /* Remove margin */
+      cursor: pointer;
+    }
