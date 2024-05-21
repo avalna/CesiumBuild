@@ -1,0 +1,144 @@
+
+/* Search for fastigher and adresser */
+#location-search-container {
+    position: absolute; /* Change to relative */
+    z-index: 1;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px;
+    background-color: #FFF;
+    width: 302px;
+    border-radius: 25px;
+    box-shadow: 0 4px 6px 0 rgba(0, 0,0 ,0.2);
+  }
+  
+  #location-search-container input {
+    width: calc(100% - 40px); /* Adjust width to make space for icon */
+    border: none;
+    font-size: medium;
+  }
+  
+  #search-clear-icon {
+    position: absolute;
+    top: 50%; /* Position in the middle */
+    right: 10px; /* Adjust as needed */
+    transform: translateY(-50%); /* Center vertically */
+    cursor: pointer;
+    display: flex; /* Initially hidden */
+  }
+  
+  #location-search-container input {
+  width: 90%;
+  border: none;
+  font-size: medium;
+  }
+  /* Remove the input border when typing */
+  #location-search-container input:focus, textarea:focus, select:focus{
+    outline: none;
+  }
+  /* clears the 'X' from Internet Explorer */
+  #location-search-container input.hide-clear[type=search]::-ms-clear,
+  input.hide-clear[type=search]::-ms-reveal {
+    display: none;
+    width: 0;
+    height: 0; 
+  }
+  
+  /* clears the 'X' from Chrome */
+  #location-search-container input.hide-clear[type="search"]::-webkit-search-decoration,
+  input.hide-clear[type="search"]::-webkit-search-cancel-button,
+  input.hide-clear[type="search"]::-webkit-search-results-button,
+  input.hide-clear[type="search"]::-webkit-search-results-decoration {
+    display: none; 
+  }
+  
+  #searchContainer {
+    display: none;
+    position: absolute;
+    top: 8px;
+    right: 120px; /* Adjust the left position as needed */
+    z-index: 1001; /* Make sure the search bar is on top */
+    background-color: #303336be;
+    border: 1px solid #444;
+    padding: px;
+    width: 300px;
+    height: 30px;
+    border-radius: 5px;
+    
+  }
+  #searchInput {
+    width: 260px;
+    background-color: #30333600;
+    padding-left: 5px;
+    padding-top: 5px;
+    font-size: 14px;
+    height: 24px;
+    border: none;
+    color: #d2d2d2;
+  }
+  #searchInput::placeholder{
+    color: #d2d2d2;
+  }
+  #addressDropdown {
+    position: absolute;
+    top: 55px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #FFF;
+    border: 1px solid #444;
+    color: #000000;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px 0 rgba(0, 0,0 ,0.2);
+    display: none;
+    max-height: 150px;
+    width: 304px;
+    overflow-y: auto;
+    z-index: 1000;
+  }
+  /* Scrollbar-effect------- */
+#addressDropdown::-webkit-scrollbar {
+  width: 5px;
+  height: 8px;
+  }
+  #addressDropdown::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: #e4e4e4;
+  margin-top: 20px;
+  margin-bottom: 20px; 
+  }
+  #addressDropdown::-webkit-scrollbar-thumb {
+  background: #0089ff;
+  border-radius: 10px;
+  transition: 0.5s;
+  }
+  #addressDropdown::-webkit-scrollbar-thumb:hover {
+  background: #d5b14c;
+  transition: 0.5s;
+  }
+
+
+
+  .addressItem {
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+
+  .clear-icon {
+    top: 0px;
+    right: 0px;
+    position: absolute;
+    cursor: pointer;
+    margin-left: 5px;
+    margin-right: 10px;
+    color: #b9b9b9;
+    font-size: 20px;
+  }
+  
+  .clear-icon:hover {
+    color: #e2e2e2;
+  }
+
+  .close-icon{
+    display: none;
+  }
