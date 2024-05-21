@@ -1,0 +1,14 @@
+.cesium-credit-logoContainer img{
+    max-height: 20px !important;
+    }
+  .cesium-viewer-bottom{
+    left: 0px !important;
+  }
+  .cesium-viewer-bottom {
+    display: block;
+    position: absolute;
+    z-index: 999999;
+    bottom: 0;
+    left: 0;
+    padding-right: 5px;
+  }
